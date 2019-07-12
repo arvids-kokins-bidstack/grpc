@@ -22,6 +22,7 @@
 #include <memory>
 #include <vector>
 
+#include <grpcpp/impl/codegen/allocator.h>
 #include <grpcpp/impl/codegen/interceptor.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/string_ref.h>
@@ -165,7 +166,9 @@ class ClientRpcInfo {
   Type type_{Type::UNKNOWN};
   const char* method_ = nullptr;
   grpc::ChannelInterface* channel_ = nullptr;
-  std::vector<std::unique_ptr<experimental::Interceptor>> interceptors_;
+  std::vector<std::unique_ptr<experimental::Interceptor>,
+              allocator<std::unique_ptr<experimental::Interceptor>>>
+      interceptors_;
   bool hijacked_ = false;
   size_t hijacked_interceptor_ = 0;
 

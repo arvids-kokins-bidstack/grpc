@@ -198,7 +198,7 @@ class ServerContext {
   /// safe to access as soon as the call has begun on the server side.
   ///
   /// \return A multimap of initial metadata key-value pairs from the server.
-  const std::multimap<grpc::string_ref, grpc::string_ref>& client_metadata()
+  const StringRefMultiMap& client_metadata()
       const {
     return *client_metadata_.map();
   }
@@ -359,8 +359,8 @@ class ServerContext {
   bool sent_initial_metadata_;
   mutable std::shared_ptr<const AuthContext> auth_context_;
   mutable internal::MetadataMap client_metadata_;
-  std::multimap<grpc::string, grpc::string> initial_metadata_;
-  std::multimap<grpc::string, grpc::string> trailing_metadata_;
+  StringMultiMap initial_metadata_;
+  StringMultiMap trailing_metadata_;
 
   bool compression_level_set_;
   grpc_compression_level compression_level_;

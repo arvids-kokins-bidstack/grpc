@@ -181,6 +181,9 @@ class ClientContext {
   ClientContext();
   ~ClientContext();
 
+  void* operator new (size_t s) { return gpr_malloc(s); }
+  void operator delete (void* p) { gpr_free(p); }
+
   /// Create a new \a ClientContext as a child of an incoming server call,
   /// according to \a options (\see PropagationOptions).
   ///
@@ -223,7 +226,7 @@ class ClientContext {
   /// ClientReaderInterface::WaitForInitialMetadata().
   ///
   /// \return A multimap of initial metadata key-value pairs from the server.
-  const std::multimap<grpc::string_ref, grpc::string_ref>&
+  const StringRefMultiMap&
   GetServerInitialMetadata() const {
     GPR_CODEGEN_ASSERT(initial_metadata_received_);
     return *recv_initial_metadata_.map();
@@ -235,7 +238,7 @@ class ClientContext {
   /// \warning This method is only callable once the stream has finished.
   ///
   /// \return A multimap of metadata trailing key-value pairs from the server.
-  const std::multimap<grpc::string_ref, grpc::string_ref>&
+  const StringRefMultiMap&
   GetServerTrailingMetadata() const {
     // TODO(yangg) check finished
     return *trailing_metadata_.map();
@@ -473,7 +476,7 @@ class ClientContext {
   std::shared_ptr<grpc_impl::CallCredentials> creds_;
   mutable std::shared_ptr<const AuthContext> auth_context_;
   struct census_context* census_context_;
-  std::multimap<grpc::string, grpc::string> send_initial_metadata_;
+  StringMultiMap send_initial_metadata_;
   mutable internal::MetadataMap recv_initial_metadata_;
   mutable internal::MetadataMap trailing_metadata_;
 

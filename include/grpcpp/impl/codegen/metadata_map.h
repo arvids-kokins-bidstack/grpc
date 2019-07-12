@@ -22,9 +22,17 @@
 #include <map>
 
 #include <grpc/impl/codegen/log.h>
+#include <grpcpp/impl/codegen/allocator.h>
 #include <grpcpp/impl/codegen/slice.h>
 
 namespace grpc {
+
+using StringMultiMap =
+    std::multimap<std::string, std::string, std::less<std::string>,
+                  allocator<std::string>>;
+using StringRefMultiMap =
+    std::multimap<grpc::string_ref, grpc::string_ref,
+                  std::less<grpc::string_ref>, allocator<grpc::string_ref>>;
 
 namespace internal {
 
@@ -63,7 +71,7 @@ class MetadataMap {
     return grpc::string();
   }
 
-  std::multimap<grpc::string_ref, grpc::string_ref>* map() {
+  StringRefMultiMap* map() {
     FillMap();
     return &map_;
   }
@@ -79,7 +87,7 @@ class MetadataMap {
  private:
   bool filled_ = false;
   grpc_metadata_array arr_;
-  std::multimap<grpc::string_ref, grpc::string_ref> map_;
+  StringRefMultiMap map_;
 
   void Destroy() {
     g_core_codegen_interface->grpc_metadata_array_destroy(&arr_);

@@ -100,7 +100,7 @@ class InterceptorBatchMethodsImpl
 
   bool GetSendMessageStatus() override { return !*fail_send_message_; }
 
-  std::multimap<grpc::string, grpc::string>* GetSendInitialMetadata() override {
+  StringMultiMap* GetSendInitialMetadata() override {
     return send_initial_metadata_;
   }
 
@@ -115,14 +115,14 @@ class InterceptorBatchMethodsImpl
     *error_message_ = status.error_message();
   }
 
-  std::multimap<grpc::string, grpc::string>* GetSendTrailingMetadata()
+  StringMultiMap* GetSendTrailingMetadata()
       override {
     return send_trailing_metadata_;
   }
 
   void* GetRecvMessage() override { return recv_message_; }
 
-  std::multimap<grpc::string_ref, grpc::string_ref>* GetRecvInitialMetadata()
+  StringRefMultiMap* GetRecvInitialMetadata()
       override {
     return recv_initial_metadata_->map();
   }
@@ -135,7 +135,7 @@ class InterceptorBatchMethodsImpl
     *fail_send_message_ = true;
   }
 
-  std::multimap<grpc::string_ref, grpc::string_ref>* GetRecvTrailingMetadata()
+  StringRefMultiMap* GetRecvTrailingMetadata()
       override {
     return recv_trailing_metadata_->map();
   }
@@ -149,8 +149,7 @@ class InterceptorBatchMethodsImpl
     serializer_ = serializer;
   }
 
-  void SetSendInitialMetadata(
-      std::multimap<grpc::string, grpc::string>* metadata) {
+  void SetSendInitialMetadata(StringMultiMap* metadata) {
     send_initial_metadata_ = metadata;
   }
 
@@ -161,8 +160,7 @@ class InterceptorBatchMethodsImpl
     error_message_ = error_message;
   }
 
-  void SetSendTrailingMetadata(
-      std::multimap<grpc::string, grpc::string>* metadata) {
+  void SetSendTrailingMetadata(StringMultiMap* metadata) {
     send_trailing_metadata_ = metadata;
   }
 
@@ -398,13 +396,13 @@ class InterceptorBatchMethodsImpl
   const void** orig_send_message_ = nullptr;
   std::function<Status(const void*)> serializer_;
 
-  std::multimap<grpc::string, grpc::string>* send_initial_metadata_;
+  StringMultiMap* send_initial_metadata_;
 
   grpc_status_code* code_ = nullptr;
   grpc::string* error_details_ = nullptr;
   grpc::string* error_message_ = nullptr;
 
-  std::multimap<grpc::string, grpc::string>* send_trailing_metadata_ = nullptr;
+  StringMultiMap* send_trailing_metadata_ = nullptr;
 
   void* recv_message_ = nullptr;
   bool* got_message_ = nullptr;
@@ -472,7 +470,7 @@ class CancelInterceptorBatchMethods
         "has a Cancel notification");
   }
 
-  std::multimap<grpc::string, grpc::string>* GetSendInitialMetadata() override {
+  StringMultiMap* GetSendInitialMetadata() override {
     GPR_CODEGEN_ASSERT(false &&
                        "It is illegal to call GetSendInitialMetadata on a "
                        "method which has a Cancel notification");
@@ -493,7 +491,7 @@ class CancelInterceptorBatchMethods
     return;
   }
 
-  std::multimap<grpc::string, grpc::string>* GetSendTrailingMetadata()
+  StringMultiMap* GetSendTrailingMetadata()
       override {
     GPR_CODEGEN_ASSERT(false &&
                        "It is illegal to call GetSendTrailingMetadata on a "
@@ -508,7 +506,7 @@ class CancelInterceptorBatchMethods
     return nullptr;
   }
 
-  std::multimap<grpc::string_ref, grpc::string_ref>* GetRecvInitialMetadata()
+  StringRefMultiMap* GetRecvInitialMetadata()
       override {
     GPR_CODEGEN_ASSERT(false &&
                        "It is illegal to call GetRecvInitialMetadata on a "
@@ -523,7 +521,7 @@ class CancelInterceptorBatchMethods
     return nullptr;
   }
 
-  std::multimap<grpc::string_ref, grpc::string_ref>* GetRecvTrailingMetadata()
+  StringRefMultiMap* GetRecvTrailingMetadata()
       override {
     GPR_CODEGEN_ASSERT(false &&
                        "It is illegal to call GetRecvTrailingMetadata on a "

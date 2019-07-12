@@ -57,7 +57,7 @@ class CallHook;
 // TODO(yangg) if the map is changed before we send, the pointers will be a
 // mess. Make sure it does not happen.
 inline grpc_metadata* FillMetadataArray(
-    const std::multimap<grpc::string, grpc::string>& metadata,
+    const StringMultiMap& metadata,
     size_t* metadata_count, const grpc::string& optional_error_details) {
   *metadata_count = metadata.size() + (optional_error_details.empty() ? 0 : 1);
   if (*metadata_count == 0) {
@@ -226,7 +226,7 @@ class CallOpSendInitialMetadata {
     maybe_compression_level_.is_set = false;
   }
 
-  void SendInitialMetadata(std::multimap<grpc::string, grpc::string>* metadata,
+  void SendInitialMetadata(StringMultiMap* metadata,
                            uint32_t flags) {
     maybe_compression_level_.is_set = false;
     send_ = true;
@@ -282,7 +282,7 @@ class CallOpSendInitialMetadata {
   bool send_;
   uint32_t flags_;
   size_t initial_metadata_count_;
-  std::multimap<grpc::string, grpc::string>* metadata_map_;
+  StringMultiMap* metadata_map_;
   grpc_metadata* initial_metadata_;
   struct {
     bool is_set;
@@ -635,8 +635,7 @@ class CallOpServerSendStatus {
  public:
   CallOpServerSendStatus() : send_status_available_(false) {}
 
-  void ServerSendStatus(
-      std::multimap<grpc::string, grpc::string>* trailing_metadata,
+  void ServerSendStatus(StringMultiMap* trailing_metadata,
       const Status& status) {
     send_error_details_ = status.error_details();
     metadata_map_ = trailing_metadata;
@@ -693,7 +692,7 @@ class CallOpServerSendStatus {
   grpc::string send_error_details_;
   grpc::string send_error_message_;
   size_t trailing_metadata_count_;
-  std::multimap<grpc::string, grpc::string>* metadata_map_;
+  StringMultiMap* metadata_map_;
   grpc_metadata* trailing_metadata_;
   grpc_slice error_message_slice_;
 };
