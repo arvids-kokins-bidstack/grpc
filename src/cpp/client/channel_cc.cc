@@ -49,7 +49,7 @@ void ::grpc::experimental::ChannelResetConnectionBackoff(Channel* channel) {
 namespace grpc_impl {
 
 static ::grpc::internal::GrpcLibraryInitializer g_gli_initializer;
-Channel::Channel(const grpc::string& host, grpc_channel* channel,
+Channel::Channel(const grpc::rtstring& host, grpc_channel* channel,
                  std::vector<std::unique_ptr<
                      ::grpc::experimental::ClientInterceptorFactoryInterface>>
                      interceptor_creators)
@@ -72,7 +72,7 @@ inline grpc_slice SliceFromArray(const char* arr, size_t len) {
                                                                          len);
 }
 
-grpc::string GetChannelInfoField(grpc_channel* channel,
+grpc::rtstring GetChannelInfoField(grpc_channel* channel,
                                  grpc_channel_info* channel_info,
                                  char*** channel_info_field) {
   char* value = nullptr;
@@ -80,20 +80,20 @@ grpc::string GetChannelInfoField(grpc_channel* channel,
   *channel_info_field = &value;
   grpc_channel_get_info(channel, channel_info);
   if (value == nullptr) return "";
-  grpc::string result = value;
+  grpc::rtstring result = value;
   gpr_free(value);
   return result;
 }
 
 }  // namespace
 
-grpc::string Channel::GetLoadBalancingPolicyName() const {
+grpc::rtstring Channel::GetLoadBalancingPolicyName() const {
   grpc_channel_info channel_info;
   return GetChannelInfoField(c_channel_, &channel_info,
                              &channel_info.lb_policy_name);
 }
 
-grpc::string Channel::GetServiceConfigJSON() const {
+grpc::rtstring Channel::GetServiceConfigJSON() const {
   grpc_channel_info channel_info;
   return GetChannelInfoField(c_channel_, &channel_info,
                              &channel_info.service_config_json);
@@ -118,7 +118,7 @@ void ChannelResetConnectionBackoff(Channel* channel) {
         context->propagation_options_.c_bitmask(), cq->cq(),
         method.channel_tag(), context->raw_deadline(), nullptr);
   } else {
-    const ::grpc::string* host_str = nullptr;
+    const ::grpc::rtstring* host_str = nullptr;
     if (!context->authority_.empty()) {
       host_str = &context->authority_;
     } else if (!host_.empty()) {

@@ -19,6 +19,8 @@
 #ifndef GRPCPP_IMPL_CODEGEN_CONFIG_H
 #define GRPCPP_IMPL_CODEGEN_CONFIG_H
 
+#include "rtstring.h"
+
 #ifndef GRPC_CUSTOM_STRING
 #include <string>
 #define GRPC_CUSTOM_STRING std::string

@@ -97,7 +97,7 @@ void ChannelArguments::SetSocketMutator(grpc_socket_mutator* mutator) {
   grpc_core::ExecCtx exec_ctx;
   for (auto it = args_.begin(); it != args_.end(); ++it) {
     if (it->type == mutator_arg.type &&
-        grpc::string(it->key) == grpc::string(mutator_arg.key)) {
+        0 == strcmp(it->key, mutator_arg.key)) {
       GPR_ASSERT(!replaced);
       it->value.pointer.vtable->destroy(it->value.pointer.p);
       it->value.pointer = mutator_arg.value.pointer;
@@ -106,7 +106,7 @@ void ChannelArguments::SetSocketMutator(grpc_socket_mutator* mutator) {
   }
 
   if (!replaced) {
-    strings_.push_back(grpc::string(mutator_arg.key));
+    strings_.push_back(grpc::rtstring(mutator_arg.key));
     args_.push_back(mutator_arg);
     args_.back().key = const_cast<char*>(strings_.back().c_str());
   }
@@ -117,7 +117,7 @@ void ChannelArguments::SetSocketMutator(grpc_socket_mutator* mutator) {
 // prefix. The user can build up a prefix string by calling this multiple times,
 // each with more significant identifier.
 void ChannelArguments::SetUserAgentPrefix(
-    const grpc::string& user_agent_prefix) {
+    const grpc::rtstring& user_agent_prefix) {
   if (user_agent_prefix.empty()) {
     return;
   }
@@ -127,7 +127,7 @@ void ChannelArguments::SetUserAgentPrefix(
     const grpc_arg& arg = *it;
     ++strings_it;
     if (arg.type == GRPC_ARG_STRING) {
-      if (grpc::string(arg.key) == GRPC_ARG_PRIMARY_USER_AGENT_STRING) {
+      if (0 == strcmp(arg.key, GRPC_ARG_PRIMARY_USER_AGENT_STRING)) {
         GPR_ASSERT(arg.value.string == strings_it->c_str());
         *(strings_it) = user_agent_prefix + " " + arg.value.string;
         it->value.string = const_cast<char*>(strings_it->c_str());
@@ -158,16 +158,16 @@ void ChannelArguments::SetMaxSendMessageSize(int size) {
 }
 
 void ChannelArguments::SetLoadBalancingPolicyName(
-    const grpc::string& lb_policy_name) {
+    const grpc::rtstring& lb_policy_name) {
   SetString(GRPC_ARG_LB_POLICY_NAME, lb_policy_name);
 }
 
 void ChannelArguments::SetServiceConfigJSON(
-    const grpc::string& service_config_json) {
+    const grpc::rtstring& service_config_json) {
   SetString(GRPC_ARG_SERVICE_CONFIG, service_config_json);
 }
 
-void ChannelArguments::SetInt(const grpc::string& key, int value) {
+void ChannelArguments::SetInt(const grpc::rtstring& key, int value) {
   grpc_arg arg;
   arg.type = GRPC_ARG_INTEGER;
   strings_.push_back(key);
@@ -177,7 +177,7 @@ void ChannelArguments::SetInt(const grpc::string& key, int value) {
   args_.push_back(arg);
 }
 
-void ChannelArguments::SetPointer(const grpc::string& key, void* value) {
+void ChannelArguments::SetPointer(const grpc::rtstring& key, void* value) {
   static const grpc_arg_pointer_vtable vtable = {
       &PointerVtableMembers::Copy, &PointerVtableMembers::Destroy,
       &PointerVtableMembers::Compare};
@@ -185,7 +185,7 @@ void ChannelArguments::SetPointer(const grpc::string& key, void* value) {
 }
 
 void ChannelArguments::SetPointerWithVtable(
-    const grpc::string& key, void* value,
+    const grpc::rtstring& key, void* value,
     const grpc_arg_pointer_vtable* vtable) {
   grpc_arg arg;
   arg.type = GRPC_ARG_POINTER;
@@ -196,8 +196,8 @@ void ChannelArguments::SetPointerWithVtable(
   args_.push_back(arg);
 }
 
-void ChannelArguments::SetString(const grpc::string& key,
-                                 const grpc::string& value) {
+void ChannelArguments::SetString(const grpc::rtstring& key,
+                                 const grpc::rtstring& value) {
   grpc_arg arg;
   arg.type = GRPC_ARG_STRING;
   strings_.push_back(key);

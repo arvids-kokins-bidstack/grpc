@@ -28,9 +28,9 @@
 namespace grpc {
 
 std::unique_ptr<ServerBuilderOption> MakeChannelArgumentOption(
-    const grpc::string& name, const grpc::string& value);
+    const grpc::rtstring& name, const grpc::rtstring& value);
 std::unique_ptr<ServerBuilderOption> MakeChannelArgumentOption(
-    const grpc::string& name, int value);
+    const grpc::rtstring& name, int value);
 
 }  // namespace grpc
 

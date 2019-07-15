@@ -143,7 +143,7 @@ class ServerContext {
   /// ASCII-Header -> Header-Name ASCII-Value
   /// Header-Name -> 1*( %x30-39 / %x61-7A / "_" / "-" / ".") ; 0-9 a-z _ - .
   /// ASCII-Value -> 1*( %x20-%x7E ) ; space and printable ASCII
-  void AddInitialMetadata(const grpc::string& key, const grpc::string& value);
+  void AddInitialMetadata(const grpc::rtstring& key, const grpc::rtstring& value);
 
   /// Add the (\a key, \a value) pair to the initial metadata
   /// associated with a server call. These are made available at the client
@@ -164,7 +164,7 @@ class ServerContext {
   /// ASCII-Header -> Header-Name ASCII-Value
   /// Header-Name -> 1*( %x30-39 / %x61-7A / "_" / "-" / ".") ; 0-9 a-z _ - .
   /// ASCII-Value -> 1*( %x20-%x7E ) ; space and printable ASCII
-  void AddTrailingMetadata(const grpc::string& key, const grpc::string& value);
+  void AddTrailingMetadata(const grpc::rtstring& key, const grpc::rtstring& value);
 
   /// IsCancelled is always safe to call when using sync or callback API.
   /// When using async API, it is only safe to call IsCancelled after
@@ -234,7 +234,7 @@ class ServerContext {
   void set_compression_algorithm(grpc_compression_algorithm algorithm);
 
   /// Set the serialized load reporting costs in \a cost_data for the call.
-  void SetLoadReportingCosts(const std::vector<grpc::string>& cost_data);
+  void SetLoadReportingCosts(const std::vector<grpc::rtstring>& cost_data);
 
   /// Return the authentication context for this server call.
   ///

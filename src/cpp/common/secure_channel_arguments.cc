@@ -23,13 +23,13 @@
 
 namespace grpc_impl {
 
-void ChannelArguments::SetSslTargetNameOverride(const grpc::string& name) {
+void ChannelArguments::SetSslTargetNameOverride(const grpc::rtstring& name) {
   SetString(GRPC_SSL_TARGET_NAME_OVERRIDE_ARG, name);
 }
 
-grpc::string ChannelArguments::GetSslTargetNameOverride() const {
+grpc::rtstring ChannelArguments::GetSslTargetNameOverride() const {
   for (unsigned int i = 0; i < args_.size(); i++) {
-    if (grpc::string(GRPC_SSL_TARGET_NAME_OVERRIDE_ARG) == args_[i].key) {
+    if (0 == strcmp(GRPC_SSL_TARGET_NAME_OVERRIDE_ARG, args_[i].key)) {
       return args_[i].value.string;
     }
   }

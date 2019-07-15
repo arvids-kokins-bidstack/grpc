@@ -42,13 +42,13 @@ class SecureCallCredentials;
 class SecureChannelCredentials;
 
 std::shared_ptr<::grpc::Channel> CreateCustomChannelImpl(
-    const grpc::string& target,
+    const grpc::rtstring& target,
     const std::shared_ptr<ChannelCredentials>& creds,
     const grpc::ChannelArguments& args);
 
 namespace experimental {
 std::shared_ptr<::grpc::Channel> CreateCustomChannelWithInterceptors(
-    const grpc::string& target,
+    const grpc::rtstring& target,
     const std::shared_ptr<ChannelCredentials>& creds,
     const grpc::ChannelArguments& args,
     std::vector<
@@ -76,13 +76,13 @@ class ChannelCredentials : private grpc::GrpcLibraryCodegen {
 
  private:
   friend std::shared_ptr<::grpc::Channel> CreateCustomChannelImpl(
-      const grpc::string& target,
+      const grpc::rtstring& target,
       const std::shared_ptr<ChannelCredentials>& creds,
       const grpc::ChannelArguments& args);
 
   friend std::shared_ptr<::grpc::Channel>
   grpc_impl::experimental::CreateCustomChannelWithInterceptors(
-      const grpc::string& target,
+      const grpc::rtstring& target,
       const std::shared_ptr<ChannelCredentials>& creds,
       const grpc::ChannelArguments& args,
       std::vector<std::unique_ptr<
@@ -90,12 +90,12 @@ class ChannelCredentials : private grpc::GrpcLibraryCodegen {
           interceptor_creators);
 
   virtual std::shared_ptr<::grpc::Channel> CreateChannelImpl(
-      const grpc::string& target, const grpc::ChannelArguments& args) = 0;
+      const grpc::rtstring& target, const grpc::ChannelArguments& args) = 0;
 
   // This function should have been a pure virtual function, but it is
   // implemented as a virtual function so that it does not break API.
   virtual std::shared_ptr<::grpc::Channel> CreateChannelWithInterceptors(
-      const grpc::string& target, const grpc::ChannelArguments& args,
+      const grpc::rtstring& target, const grpc::ChannelArguments& args,
       std::vector<std::unique_ptr<
           grpc::experimental::ClientInterceptorFactoryInterface>>
           interceptor_creators) {
@@ -134,16 +134,16 @@ struct SslCredentialsOptions {
   /// roots can be overridden using the \a GRPC_DEFAULT_SSL_ROOTS_FILE_PATH
   /// environment variable pointing to a file on the file system containing the
   /// roots.
-  grpc::string pem_root_certs;
+  grpc::rtstring pem_root_certs;
 
   /// The buffer containing the PEM encoding of the client's private key. This
   /// parameter can be empty if the client does not have a private key.
-  grpc::string pem_private_key;
+  grpc::rtstring pem_private_key;
 
   /// The buffer containing the PEM encoding of the client's certificate chain.
   /// This parameter can be empty if the client does not have a certificate
   /// chain.
-  grpc::string pem_cert_chain;
+  grpc::rtstring pem_cert_chain;
 };
 
 // Factories for building different types of Credentials The functions may

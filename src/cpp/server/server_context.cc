@@ -317,13 +317,13 @@ internal::CompletionQueueTag* ServerContext::GetCompletionOpTag() {
   return static_cast<internal::CompletionQueueTag*>(completion_op_);
 }
 
-void ServerContext::AddInitialMetadata(const grpc::string& key,
-                                       const grpc::string& value) {
+void ServerContext::AddInitialMetadata(const grpc::rtstring& key,
+                                       const grpc::rtstring& value) {
   initial_metadata_.insert(std::make_pair(key, value));
 }
 
-void ServerContext::AddTrailingMetadata(const grpc::string& key,
-                                        const grpc::string& value) {
+void ServerContext::AddTrailingMetadata(const grpc::rtstring& key,
+                                        const grpc::rtstring& value) {
   trailing_metadata_.insert(std::make_pair(key, value));
 }
 
@@ -391,7 +391,7 @@ const struct census_context* ServerContext::census_context() const {
 }
 
 void ServerContext::SetLoadReportingCosts(
-    const std::vector<grpc::string>& cost_data) {
+    const std::vector<grpc::rtstring>& cost_data) {
   if (call_ == nullptr) return;
   for (const auto& cost_datum : cost_data) {
     AddTrailingMetadata(GRPC_LB_COST_MD_KEY, cost_datum);

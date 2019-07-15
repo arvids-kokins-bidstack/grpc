@@ -83,8 +83,8 @@ std::unique_ptr<ClientContext> ClientContext::FromServerContext(
   return ctx;
 }
 
-void ClientContext::AddMetadata(const grpc::string& meta_key,
-                                const grpc::string& meta_value) {
+void ClientContext::AddMetadata(const grpc::rtstring& meta_key,
+                                const grpc::rtstring& meta_value) {
   send_initial_metadata_.insert(std::make_pair(meta_key, meta_value));
 }
 
@@ -136,8 +136,8 @@ void ClientContext::SendCancelToInterceptors() {
   }
 }
 
-grpc::string ClientContext::peer() const {
-  grpc::string peer;
+grpc::rtstring ClientContext::peer() const {
+  grpc::rtstring peer;
   if (call_) {
     char* c_peer = grpc_call_get_peer(call_);
     peer = c_peer;

@@ -236,7 +236,7 @@ class ServerBuilder {
   /// Add a channel argument (an escape hatch to tuning core library parameters
   /// directly)
   template <class T>
-  ServerBuilder& AddChannelArgument(const grpc::string& arg, const T& value) {
+  ServerBuilder& AddChannelArgument(const grpc::rtstring& arg, const T& value) {
     return SetOption(grpc::MakeChannelArgumentOption(arg, value));
   }
 
