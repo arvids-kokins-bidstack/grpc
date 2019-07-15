@@ -444,6 +444,8 @@ class ClientReaderWriterFactory {
 template <class W, class R>
 class ClientReaderWriter final : public ClientReaderWriterInterface<W, R> {
  public:
+  void* operator new(size_t s) { return gpr_malloc(s); }
+  void operator delete(void* p) { return gpr_free(p); }
   /// Block waiting to read initial metadata from the server.
   /// This call is optional, but if it is used, it cannot be used concurrently
   /// with or after the \a Finish method.
