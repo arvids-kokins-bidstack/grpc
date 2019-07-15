@@ -122,9 +122,7 @@ class Server : public grpc::ServerInterface, private grpc::GrpcLibraryCodegen {
     /// interceptors
     std::shared_ptr<::grpc::Channel> InProcessChannelWithInterceptors(
         const grpc::ChannelArguments& args,
-        std::vector<std::unique_ptr<
-            grpc::experimental::ClientInterceptorFactoryInterface>>
-            interceptor_creators);
+        grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators);
 
    private:
     Server* server_;

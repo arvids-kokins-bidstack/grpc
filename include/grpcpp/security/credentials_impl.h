@@ -51,9 +51,7 @@ std::shared_ptr<::grpc::Channel> CreateCustomChannelWithInterceptors(
     const grpc::rtstring& target,
     const std::shared_ptr<ChannelCredentials>& creds,
     const grpc::ChannelArguments& args,
-    std::vector<
-        std::unique_ptr<grpc::experimental::ClientInterceptorFactoryInterface>>
-        interceptor_creators);
+    grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators);
 }
 
 /// A channel credentials object encapsulates all the state needed by a client
@@ -85,9 +83,7 @@ class ChannelCredentials : private grpc::GrpcLibraryCodegen {
       const grpc::rtstring& target,
       const std::shared_ptr<ChannelCredentials>& creds,
       const grpc::ChannelArguments& args,
-      std::vector<std::unique_ptr<
-          grpc::experimental::ClientInterceptorFactoryInterface>>
-          interceptor_creators);
+      grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators);
 
   virtual std::shared_ptr<::grpc::Channel> CreateChannelImpl(
       const grpc::rtstring& target, const grpc::ChannelArguments& args) = 0;
@@ -96,9 +92,7 @@ class ChannelCredentials : private grpc::GrpcLibraryCodegen {
   // implemented as a virtual function so that it does not break API.
   virtual std::shared_ptr<::grpc::Channel> CreateChannelWithInterceptors(
       const grpc::rtstring& target, const grpc::ChannelArguments& args,
-      std::vector<std::unique_ptr<
-          grpc::experimental::ClientInterceptorFactoryInterface>>
-          interceptor_creators) {
+      grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators) {
     return nullptr;
   }
 };

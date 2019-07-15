@@ -30,9 +30,7 @@ namespace grpc {
 
 std::shared_ptr<Channel> CreateChannelInternal(
     const grpc::rtstring& host, grpc_channel* c_channel,
-    std::vector<std::unique_ptr<
-        ::grpc::experimental::ClientInterceptorFactoryInterface>>
-        interceptor_creators);
+    ClientInterceptorFactoryInterfaceVector interceptor_creators);
 
 }  // namespace grpc
 

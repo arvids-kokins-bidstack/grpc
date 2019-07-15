@@ -47,9 +47,7 @@ class SecureChannelCredentials final : public ChannelCredentials {
  private:
   std::shared_ptr<::grpc::Channel> CreateChannelWithInterceptors(
       const grpc::rtstring& target, const grpc::ChannelArguments& args,
-      std::vector<std::unique_ptr<
-          ::grpc::experimental::ClientInterceptorFactoryInterface>>
-          interceptor_creators) override;
+      grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators) override;
   grpc_channel_credentials* const c_creds_;
 };
 

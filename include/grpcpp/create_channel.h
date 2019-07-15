@@ -44,9 +44,7 @@ CreateCustomChannelWithInterceptors(
     const grpc::rtstring& target,
     const std::shared_ptr<ChannelCredentials>& creds,
     const ChannelArguments& args,
-    std::vector<
-        std::unique_ptr<experimental::ClientInterceptorFactoryInterface>>
-        interceptor_creators) {
+    grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators) {
   return ::grpc_impl::experimental::CreateCustomChannelWithInterceptors(
       target, creds, args, std::move(interceptor_creators));
 }

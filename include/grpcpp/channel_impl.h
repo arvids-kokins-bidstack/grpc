@@ -23,6 +23,7 @@
 #include <mutex>
 
 #include <grpc/grpc.h>
+#include <grpcpp/impl/codegen/allocator.h>
 #include <grpcpp/impl/call.h>
 #include <grpcpp/impl/codegen/channel_interface.h>
 #include <grpcpp/impl/codegen/client_interceptor.h>
@@ -37,9 +38,7 @@ namespace grpc {
 
 std::shared_ptr<::grpc_impl::Channel> CreateChannelInternal(
     const grpc::rtstring& host, grpc_channel* c_channel,
-    std::vector<
-        std::unique_ptr<experimental::ClientInterceptorFactoryInterface>>
-        interceptor_creators);
+    ClientInterceptorFactoryInterfaceVector interceptor_creators);
 }  // namespace grpc
 namespace grpc_impl {
 
@@ -58,6 +57,9 @@ class Channel final : public ::grpc::ChannelInterface,
  public:
   ~Channel();
 
+  void* operator new(size_t s) { return gpr_malloc(s); }
+  void operator delete(void* p) { return gpr_free(p); }
+
   /// Get the current channel state. If the channel is in IDLE and
   /// \a try_to_connect is set to true, try to connect.
   grpc_connectivity_state GetState(bool try_to_connect) override;
@@ -75,14 +77,10 @@ class Channel final : public ::grpc::ChannelInterface,
   friend void experimental::ChannelResetConnectionBackoff(Channel* channel);
   friend std::shared_ptr<Channel> grpc::CreateChannelInternal(
       const grpc::rtstring& host, grpc_channel* c_channel,
-      std::vector<std::unique_ptr<
-          ::grpc::experimental::ClientInterceptorFactoryInterface>>
-          interceptor_creators);
+      ClientInterceptorFactoryInterfaceVector interceptor_creators);
   friend class ::grpc::internal::InterceptedChannel;
   Channel(const grpc::rtstring& host, grpc_channel* c_channel,
-          std::vector<std::unique_ptr<
-              ::grpc::experimental::ClientInterceptorFactoryInterface>>
-              interceptor_creators);
+          grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators);
 
   ::grpc::internal::Call CreateCall(const ::grpc::internal::RpcMethod& method,
                                     ::grpc::ClientContext* context,
@@ -115,9 +113,7 @@ class Channel final : public ::grpc::ChannelInterface,
   // shutdown callback tag (invoked when the CQ is fully shutdown).
   ::grpc::CompletionQueue* callback_cq_ = nullptr;
 
-  std::vector<
-      std::unique_ptr<::grpc::experimental::ClientInterceptorFactoryInterface>>
-      interceptor_creators_;
+  grpc::ClientInterceptorFactoryInterfaceVector interceptor_creators_;
 };
 
 }  // namespace grpc_impl

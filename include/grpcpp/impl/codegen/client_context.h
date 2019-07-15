@@ -439,9 +439,7 @@ class ClientContext {
   experimental::ClientRpcInfo* set_client_rpc_info(
       const char* method, internal::RpcMethod::RpcType type,
       grpc::ChannelInterface* channel,
-      const std::vector<
-          std::unique_ptr<experimental::ClientInterceptorFactoryInterface>>&
-          creators,
+      const ClientInterceptorFactoryInterfaceVector& creators,
       size_t interceptor_pos) {
     rpc_info_ = experimental::ClientRpcInfo(this, type, method, channel);
     rpc_info_.RegisterInterceptors(creators, interceptor_pos);

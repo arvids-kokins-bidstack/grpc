@@ -58,6 +58,13 @@ class ClientInterceptorFactoryInterface {
 };
 }  // namespace experimental
 
+template <class T>
+struct rtvector : std::vector<T, allocator<T>> {
+  using std::vector<T, allocator<T>>::vector;
+};
+using ClientInterceptorFactoryInterfaceVector = rtvector<
+    std::unique_ptr<::grpc::experimental::ClientInterceptorFactoryInterface>>;
+
 namespace internal {
 extern experimental::ClientInterceptorFactoryInterface*
     g_global_client_interceptor_factory;
@@ -139,8 +146,7 @@ class ClientRpcInfo {
   }
 
   void RegisterInterceptors(
-      const std::vector<std::unique_ptr<
-          experimental::ClientInterceptorFactoryInterface>>& creators,
+      const ClientInterceptorFactoryInterfaceVector& creators,
       size_t interceptor_pos) {
     if (interceptor_pos > creators.size()) {
       // No interceptors to register
