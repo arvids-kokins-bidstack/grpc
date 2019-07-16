@@ -28,10 +28,10 @@
 namespace grpc {
 
 using StringMultiMap =
-    std::multimap<rtstring, rtstring, std::less<rtstring>, allocator<rtstring>>;
+    std::multimap<rtstring, rtstring, std::less<rtstring>, allocator<std::pair<const rtstring, rtstring>>>;
 using StringRefMultiMap =
     std::multimap<string_ref, string_ref,
-                  std::less<string_ref>, allocator<string_ref>>;
+                  std::less<string_ref>, allocator<std::pair<const string_ref, string_ref>>>;
 
 namespace internal {
 
