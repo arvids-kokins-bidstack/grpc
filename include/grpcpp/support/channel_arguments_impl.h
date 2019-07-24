@@ -144,7 +144,7 @@ class ChannelArguments {
   grpc::rtstring GetSslTargetNameOverride() const;
 
   std::vector<grpc_arg, grpc::allocator<grpc_arg>> args_;
-  std::list<grpc::rtstring, grpc::allocator<grpc_arg>> strings_;
+  std::list<grpc::rtstring, grpc::allocator<grpc::rtstring>> strings_;
 };
 
 }  // namespace grpc_impl
