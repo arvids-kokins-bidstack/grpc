@@ -220,7 +220,7 @@ class SerializationTraits<ByteBuffer, void> {
  public:
   static Status Deserialize(ByteBuffer* byte_buffer, ByteBuffer* dest) {
     dest->set_buffer(byte_buffer->buffer_);
-    return Status::OK;
+    return Status::OK();
   }
   static Status Serialize(const ByteBuffer& source, ByteBuffer* buffer,
                           bool* own_buffer) {

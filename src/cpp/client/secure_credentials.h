@@ -37,6 +37,10 @@ class SecureChannelCredentials final : public ChannelCredentials {
   ~SecureChannelCredentials() {
     if (c_creds_ != nullptr) c_creds_->Unref();
   }
+
+  void* operator new(size_t s) { return gpr_malloc(s); }
+  void operator delete(void* p) { return gpr_free(p); }
+
   grpc_channel_credentials* GetRawCreds() { return c_creds_; }
 
   std::shared_ptr<::grpc::Channel> CreateChannelImpl(

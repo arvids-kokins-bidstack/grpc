@@ -112,7 +112,7 @@ void ThreadManager::MarkAsCompleted(WorkerThread* thd) {
 }
 
 void ThreadManager::CleanupCompletedThreads() {
-  std::list<WorkerThread*> completed_threads;
+  std::list<WorkerThread*, grpc::allocator<WorkerThread*>> completed_threads;
   {
     // swap out the completed threads list: allows other threads to clean up
     // more quickly

@@ -297,7 +297,7 @@ void DefaultHealthCheckService::HealthCheckServiceImpl::CheckCallHandler::
   gpr_log(GPR_DEBUG, "[HCS %p] Health check started for handler %p", service_,
           this);
   grpc::string service_name;
-  grpc::Status status = Status::OK;
+  grpc::Status status = Status::OK();
   ByteBuffer response;
   if (!service_->DecodeRequest(request_, &service_name)) {
     status = Status(StatusCode::INVALID_ARGUMENT, "could not parse request");
@@ -422,7 +422,7 @@ void DefaultHealthCheckService::HealthCheckServiceImpl::WatchCallHandler::
   // Grab shutdown lock and send response.
   grpc_core::MutexLock cq_lock(&service_->cq_shutdown_mu_);
   if (service_->shutdown_) {
-    SendFinishLocked(std::move(self), Status::CANCELLED);
+    SendFinishLocked(std::move(self), Status::CANCELLED());
     return;
   }
   if (!success) {
@@ -439,7 +439,7 @@ void DefaultHealthCheckService::HealthCheckServiceImpl::WatchCallHandler::
 void DefaultHealthCheckService::HealthCheckServiceImpl::WatchCallHandler::
     OnSendHealthDone(std::shared_ptr<CallHandler> self, bool ok) {
   if (!ok) {
-    SendFinish(std::move(self), Status::CANCELLED);
+    SendFinish(std::move(self), Status::CANCELLED());
     return;
   }
   grpc_core::MutexLock lock(&send_mu_);
@@ -493,7 +493,7 @@ void DefaultHealthCheckService::HealthCheckServiceImpl::WatchCallHandler::
           "is_cancelled: %d).",
           service_, this, static_cast<int>(ctx_.IsCancelled()));
   database_->UnregisterCallHandler(service_name_, self);
-  SendFinish(std::move(self), Status::CANCELLED);
+  SendFinish(std::move(self), Status::CANCELLED());
 }
 
 }  // namespace grpc

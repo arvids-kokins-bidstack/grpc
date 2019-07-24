@@ -437,6 +437,9 @@ class Server::SyncRequest final : public grpc::internal::CompletionQueueTag {
       }
     }
 
+    void* operator new(size_t s) { return gpr_malloc(s); }
+    void operator delete(void* p) { gpr_free(p); }
+
     void Run(const std::shared_ptr<GlobalCallbacks>& global_callbacks,
              bool resources) {
       global_callbacks_ = global_callbacks;

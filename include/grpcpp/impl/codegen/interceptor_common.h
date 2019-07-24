@@ -153,8 +153,8 @@ class InterceptorBatchMethodsImpl
     send_initial_metadata_ = metadata;
   }
 
-  void SetSendStatus(grpc_status_code* code, grpc::string* error_details,
-                     grpc::string* error_message) {
+  void SetSendStatus(grpc_status_code* code, grpc::rtstring* error_details,
+                     grpc::rtstring* error_message) {
     code_ = code;
     error_details_ = error_details;
     error_message_ = error_message;
@@ -399,8 +399,8 @@ class InterceptorBatchMethodsImpl
   StringMultiMap* send_initial_metadata_;
 
   grpc_status_code* code_ = nullptr;
-  grpc::string* error_details_ = nullptr;
-  grpc::string* error_message_ = nullptr;
+  grpc::rtstring* error_details_ = nullptr;
+  grpc::rtstring* error_message_ = nullptr;
 
   StringMultiMap* send_trailing_metadata_ = nullptr;
 

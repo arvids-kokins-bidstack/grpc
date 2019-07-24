@@ -143,8 +143,8 @@ class ChannelArguments {
   // Returns empty string when it is not set.
   grpc::rtstring GetSslTargetNameOverride() const;
 
-  std::vector<grpc_arg> args_;
-  std::list<grpc::rtstring> strings_;
+  std::vector<grpc_arg, grpc::allocator<grpc_arg>> args_;
+  std::list<grpc::rtstring, grpc::allocator<grpc_arg>> strings_;
 };
 
 }  // namespace grpc_impl

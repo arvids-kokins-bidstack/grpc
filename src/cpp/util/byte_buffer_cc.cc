@@ -40,7 +40,7 @@ Status ByteBuffer::Dump(std::vector<Slice>* slices) const {
     slices->push_back(Slice(s, Slice::STEAL_REF));
   }
   grpc_byte_buffer_reader_destroy(&reader);
-  return Status::OK;
+  return Status::OK();
 }
 
 }  // namespace grpc

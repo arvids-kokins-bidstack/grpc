@@ -124,6 +124,9 @@ class ThreadManager {
     WorkerThread(ThreadManager* thd_mgr);
     ~WorkerThread();
 
+    void* operator new(size_t s) { return gpr_malloc(s); }
+    void operator delete(void* p) { gpr_free(p); }
+
    private:
     // Calls thd_mgr_->MainWorkLoop() and once that completes, calls
     // thd_mgr_>MarkAsCompleted(this) to mark the thread as completed
@@ -171,7 +174,7 @@ class ThreadManager {
   int max_active_threads_sofar_;
 
   grpc_core::Mutex list_mu_;
-  std::list<WorkerThread*> completed_threads_;
+  std::list<WorkerThread*, grpc::allocator<WorkerThread*>> completed_threads_;
 };
 
 }  // namespace grpc

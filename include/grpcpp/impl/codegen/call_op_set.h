@@ -58,7 +58,7 @@ class CallHook;
 // mess. Make sure it does not happen.
 inline grpc_metadata* FillMetadataArray(
     const StringMultiMap& metadata,
-    size_t* metadata_count, const grpc::string& optional_error_details) {
+    size_t* metadata_count, const grpc::rtstring& optional_error_details) {
   *metadata_count = metadata.size() + (optional_error_details.empty() ? 0 : 1);
   if (*metadata_count == 0) {
     return nullptr;
@@ -689,8 +689,8 @@ class CallOpServerSendStatus {
   bool hijacked_ = false;
   bool send_status_available_;
   grpc_status_code send_status_code_;
-  grpc::string send_error_details_;
-  grpc::string send_error_message_;
+  grpc::rtstring send_error_details_;
+  grpc::rtstring send_error_message_;
   size_t trailing_metadata_count_;
   StringMultiMap* metadata_map_;
   grpc_metadata* trailing_metadata_;
@@ -772,12 +772,12 @@ class CallOpClientRecvStatus {
 
   void FinishOp(bool* status) {
     if (recv_status_ == nullptr || hijacked_) return;
-    grpc::string binary_error_details = metadata_map_->GetBinaryErrorDetails();
+    grpc::rtstring binary_error_details = metadata_map_->GetBinaryErrorDetails();
     *recv_status_ =
         Status(static_cast<StatusCode>(status_code_),
                GRPC_SLICE_IS_EMPTY(error_message_)
-                   ? grpc::string()
-                   : grpc::string(GRPC_SLICE_START_PTR(error_message_),
+                   ? grpc::rtstring()
+                   : grpc::rtstring(GRPC_SLICE_START_PTR(error_message_),
                                   GRPC_SLICE_END_PTR(error_message_)),
                binary_error_details);
     client_context_->set_debug_error_string(

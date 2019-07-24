@@ -69,7 +69,9 @@ std::shared_ptr<ChannelCredentials> WrapChannelCredentials(
     grpc_channel_credentials* creds) {
   return creds == nullptr ? nullptr
                           : std::shared_ptr<ChannelCredentials>(
-                                new SecureChannelCredentials(creds));
+                                new SecureChannelCredentials(creds),
+                                std::default_delete<SecureChannelCredentials>(),
+                                grpc::allocator<SecureChannelCredentials>());
 }
 
 std::shared_ptr<CallCredentials> WrapCallCredentials(
