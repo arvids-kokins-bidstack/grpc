@@ -88,13 +88,13 @@ Status ProtoServerReflection::ServerReflectionInfo(
     stream->Write(response);
   }
 
-  return Status::OK;
+  return Status::OK();
 }
 
 void ProtoServerReflection::FillErrorResponse(const Status& status,
                                               ErrorResponse* error_response) {
   error_response->set_error_code(status.error_code());
-  error_response->set_error_message(status.error_message());
+  error_response->set_error_message(status.error_message().c_str());
 }
 
 Status ProtoServerReflection::ListService(ServerContext* context,
@@ -106,14 +106,14 @@ Status ProtoServerReflection::ListService(ServerContext* context,
     ServiceResponse* service_response = response->add_service();
     service_response->set_name(*it);
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ProtoServerReflection::GetFileByName(
     ServerContext* context, const grpc::string& filename,
     ServerReflectionResponse* response) {
   if (descriptor_pool_ == nullptr) {
-    return Status::CANCELLED;
+    return Status::CANCELLED();
   }
 
   const protobuf::FileDescriptor* file_desc =
@@ -123,14 +123,14 @@ Status ProtoServerReflection::GetFileByName(
   }
   std::unordered_set<grpc::string> seen_files;
   FillFileDescriptorResponse(file_desc, response, &seen_files);
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ProtoServerReflection::GetFileContainingSymbol(
     ServerContext* context, const grpc::string& symbol,
     ServerReflectionResponse* response) {
   if (descriptor_pool_ == nullptr) {
-    return Status::CANCELLED;
+    return Status::CANCELLED();
   }
 
   const protobuf::FileDescriptor* file_desc =
@@ -140,14 +140,14 @@ Status ProtoServerReflection::GetFileContainingSymbol(
   }
   std::unordered_set<grpc::string> seen_files;
   FillFileDescriptorResponse(file_desc, response, &seen_files);
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ProtoServerReflection::GetFileContainingExtension(
     ServerContext* context, const ExtensionRequest* request,
     ServerReflectionResponse* response) {
   if (descriptor_pool_ == nullptr) {
-    return Status::CANCELLED;
+    return Status::CANCELLED();
   }
 
   const protobuf::Descriptor* desc =
@@ -164,14 +164,14 @@ Status ProtoServerReflection::GetFileContainingExtension(
   }
   std::unordered_set<grpc::string> seen_files;
   FillFileDescriptorResponse(field_desc->file(), response, &seen_files);
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ProtoServerReflection::GetAllExtensionNumbers(
     ServerContext* context, const grpc::string& type,
     ExtensionNumberResponse* response) {
   if (descriptor_pool_ == nullptr) {
-    return Status::CANCELLED;
+    return Status::CANCELLED();
   }
 
   const protobuf::Descriptor* desc =
@@ -186,7 +186,7 @@ Status ProtoServerReflection::GetAllExtensionNumbers(
     response->add_extension_number((*it)->number());
   }
   response->set_base_type_name(type);
-  return Status::OK;
+  return Status::OK();
 }
 
 void ProtoServerReflection::FillFileDescriptorResponse(

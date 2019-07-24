@@ -27,10 +27,10 @@ grpc::Status ExtractErrorDetails(const grpc::Status& from,
   if (to == nullptr) {
     return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "");
   }
-  if (!to->ParseFromString(from.error_details())) {
+  if (!to->ParseFromString(from.error_details().c_str())) {
     return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "");
   }
-  return grpc::Status::OK;
+  return grpc::Status::OK();
 }
 
 grpc::Status SetErrorDetails(const ::google::rpc::Status& from,
@@ -43,8 +43,8 @@ grpc::Status SetErrorDetails(const ::google::rpc::Status& from,
       from.code() <= grpc::StatusCode::UNAUTHENTICATED) {
     code = static_cast<grpc::StatusCode>(from.code());
   }
-  *to = grpc::Status(code, from.message(), from.SerializeAsString());
-  return grpc::Status::OK;
+  *to = grpc::Status(code, from.message().c_str(), from.SerializeAsString().c_str());
+  return grpc::Status::OK();
 }
 
 }  // namespace grpc_impl

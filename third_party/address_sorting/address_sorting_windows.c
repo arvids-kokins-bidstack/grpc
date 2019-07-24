@@ -40,6 +40,8 @@
 
 #include "address_sorting_internal.h"
 
+#include "../include/grpc/support/alloc.h"
+
 #if defined(ADDRESS_SORTING_WINDOWS)
 
 #include <errno.h>
@@ -74,7 +76,7 @@ static bool windows_source_addr_factory_get_source_addr(
 
 static void windows_source_addr_factory_destroy(
     address_sorting_source_addr_factory* self) {
-  free(self);
+  gpr_free(self);
 }
 
 static const address_sorting_source_addr_factory_vtable
@@ -86,7 +88,7 @@ static const address_sorting_source_addr_factory_vtable
 address_sorting_source_addr_factory*
 address_sorting_create_source_addr_factory_for_current_platform() {
   address_sorting_source_addr_factory* factory =
-      malloc(sizeof(address_sorting_source_addr_factory));
+      gpr_malloc(sizeof(address_sorting_source_addr_factory));
   memset(factory, 0, sizeof(address_sorting_source_addr_factory));
   factory->vtable = &windows_source_addr_factory_vtable;
   return factory;

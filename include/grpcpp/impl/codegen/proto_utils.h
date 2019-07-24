@@ -86,7 +86,7 @@ Status GenericDeserialize(ByteBuffer* buffer,
     ::grpc::protobuf::io::CodedInputStream decoder(&reader);
     decoder.SetTotalBytesLimit(INT_MAX, INT_MAX);
     if (!msg->ParseFromCodedStream(&decoder)) {
-      result = Status(StatusCode::INTERNAL, msg->InitializationErrorString());
+      result = Status(StatusCode::INTERNAL, msg->InitializationErrorString().c_str());
     }
     if (!decoder.ConsumedEntireMessage()) {
       result = Status(StatusCode::INTERNAL, "Did not read entire message");

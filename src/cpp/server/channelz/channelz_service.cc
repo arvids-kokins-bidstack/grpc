@@ -42,9 +42,9 @@ Status ChannelzService::GetTopChannels(
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetServers(
@@ -58,9 +58,9 @@ Status ChannelzService::GetServers(
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetServer(ServerContext* unused,
@@ -74,9 +74,9 @@ Status ChannelzService::GetServer(ServerContext* unused,
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetServerSockets(
@@ -91,9 +91,9 @@ Status ChannelzService::GetServerSockets(
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetChannel(
@@ -106,9 +106,9 @@ Status ChannelzService::GetChannel(
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetSubchannel(
@@ -122,9 +122,9 @@ Status ChannelzService::GetSubchannel(
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 Status ChannelzService::GetSocket(ServerContext* unused,
@@ -137,9 +137,9 @@ Status ChannelzService::GetSocket(ServerContext* unused,
   grpc::protobuf::util::Status s = ParseJson(json_str, response);
   gpr_free(json_str);
   if (!s.ok()) {
-    return Status(StatusCode::INTERNAL, s.ToString());
+    return Status(StatusCode::INTERNAL, s.ToString().c_str());
   }
-  return Status::OK;
+  return Status::OK();
 }
 
 }  // namespace grpc
