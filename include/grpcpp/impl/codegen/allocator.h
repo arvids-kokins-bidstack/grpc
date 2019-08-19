@@ -8,6 +8,15 @@ namespace grpc {
 template <class T>
 struct allocator {
   typedef T value_type;
+
+  using pointer = T*;
+  using const_pointer = const T*;
+  using reference = T&;
+  using const_reference = const T&;
+  using difference_type = ptrdiff_t;
+  using size_type = size_t;
+  template <class U> struct rebind {typedef allocator<U> other;};
+
   allocator() = default;
   template <class U>
   constexpr allocator(const allocator<U>&) noexcept {}

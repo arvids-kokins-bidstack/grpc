@@ -16,6 +16,7 @@
  *
  */
 
+#include <string.h>
 #include <grpcpp/support/channel_arguments.h>
 
 #include <grpc/grpc_security.h>

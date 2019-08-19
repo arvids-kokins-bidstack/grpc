@@ -132,8 +132,8 @@ class CoreCodegenInterface {
   virtual void grpc_metadata_array_init(grpc_metadata_array* array) = 0;
   virtual void grpc_metadata_array_destroy(grpc_metadata_array* array) = 0;
 
-  virtual const Status& ok() = 0;
-  virtual const Status& cancelled() = 0;
+  virtual Status ok() = 0;
+  virtual Status cancelled() = 0;
 
   virtual gpr_timespec gpr_inf_future(gpr_clock_type type) = 0;
   virtual gpr_timespec gpr_time_0(gpr_clock_type type) = 0;

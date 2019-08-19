@@ -114,8 +114,8 @@ class CoreCodegen final : public CoreCodegenInterface {
   gpr_timespec gpr_inf_future(gpr_clock_type type) override;
   gpr_timespec gpr_time_0(gpr_clock_type type) override;
 
-  virtual const Status& ok() override;
-  virtual const Status& cancelled() override;
+  virtual Status ok() override;
+  virtual Status cancelled() override;
 
   void assert_fail(const char* failed_assertion, const char* file,
                    int line) override;
