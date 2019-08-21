@@ -1415,6 +1415,7 @@ if (gRPC_INSTALL)
 endif()
 
 
+if (GRPC_UNNEEDED)
 add_library(grpc_cronet
   src/core/lib/surface/init.cc
   src/core/lib/avl/avl.cc
@@ -3019,6 +3020,7 @@ target_link_libraries(dns_test_util
 
 endif (gRPC_BUILD_TESTS)
 
+endif (GRPC_UNNEEDED)
 add_library(grpc++
   src/cpp/client/insecure_credentials.cc
   src/cpp/client/secure_credentials.cc
@@ -3370,6 +3372,7 @@ if (gRPC_INSTALL)
   )
 endif()
 
+if (GRPC_UNNEEDED)
 if (gRPC_BUILD_TESTS)
 
 if (gRPC_BUILD_CODEGEN)
@@ -19557,7 +19560,7 @@ target_link_libraries(uri_fuzzer_test_one_entry
 
 endif (gRPC_BUILD_TESTS)
 
-
+endif(GRPC_UNNEEDED)
 
 
 
