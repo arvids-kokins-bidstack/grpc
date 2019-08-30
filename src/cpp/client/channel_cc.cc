@@ -180,7 +180,8 @@ class TagSaver final : public ::grpc::internal::CompletionQueueTag {
   ~TagSaver() override {}
   bool FinalizeResult(void** tag, bool* status) override {
     *tag = tag_;
-    delete this;
+    this->~TagSaver();
+    gpr_free(this);
     return true;
   }
 
@@ -193,7 +194,7 @@ class TagSaver final : public ::grpc::internal::CompletionQueueTag {
 void Channel::NotifyOnStateChangeImpl(grpc_connectivity_state last_observed,
                                       gpr_timespec deadline,
                                       ::grpc::CompletionQueue* cq, void* tag) {
-  TagSaver* tag_saver = new TagSaver(tag);
+  TagSaver* tag_saver = new (gpr_malloc(sizeof(TagSaver))) TagSaver(tag);
   grpc_channel_watch_connectivity_state(c_channel_, last_observed, deadline,
                                         cq->cq(), tag_saver);
 }
